@@ -344,7 +344,14 @@ export default function Home() {
                       {script.category.toUpperCase()}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-bold">{script.title}</CardTitle>
+                  <CardTitle className="text-xl font-bold">
+                    <Link
+                      href={`/scripts/${script.id}`}
+                      className="hover:text-primary transition-colors duration-200 cursor-pointer"
+                    >
+                      {script.title}
+                    </Link>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-1">
                   <p className="text-muted-foreground line-clamp-3">{script.description}</p>

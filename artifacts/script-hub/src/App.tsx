@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import ScriptDetail from "@/pages/script-detail";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
 import { useAdminMe } from "@workspace/api-client-react";
@@ -57,6 +58,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/scripts/:id" component={ScriptDetail} />
       <Route path="/admin" component={() => <AdminAuthRoute component={AdminLogin} />} />
       <Route path="/admin/dashboard" component={() => <ProtectedRoute component={AdminDashboard} />} />
       <Route component={NotFound} />
