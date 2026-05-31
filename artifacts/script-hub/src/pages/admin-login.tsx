@@ -11,7 +11,13 @@ import { Lock, Zap } from "lucide-react";
 
 function LoginGraphic() {
   return (
-    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" aria-hidden="true">
+    <svg
+      viewBox="0 0 400 400"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
+      aria-hidden="true"
+    >
       <defs>
         <radialGradient id="lglow" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#dc2626" stopOpacity="0.5" />
@@ -20,18 +26,58 @@ function LoginGraphic() {
         <filter id="lblur"><feGaussianBlur stdDeviation="6" /></filter>
       </defs>
       <circle cx="200" cy="200" r="180" fill="url(#lglow)" filter="url(#lblur)" />
-      {[60,90,120,150].map(r => (
-        <circle key={r} cx="200" cy="200" r={r} stroke="#dc2626" strokeOpacity="0.25" strokeWidth="1" fill="none" strokeDasharray="8 6" />
+      {/* Dashed rings — each spins at different speed */}
+      {[
+        { r: 60,  dur: '20s', rev: false, delay: '0s' },
+        { r: 90,  dur: '30s', rev: true,  delay: '-5s' },
+        { r: 120, dur: '40s', rev: false, delay: '-10s' },
+        { r: 150, dur: '55s', rev: true,  delay: '-15s' },
+      ].map(({ r, dur, rev, delay }) => (
+        <circle
+          key={r}
+          cx="200" cy="200" r={r}
+          stroke="#dc2626" strokeOpacity="0.25" strokeWidth="1"
+          fill="none" strokeDasharray="8 6"
+          className={rev ? 'anim-orbit-rev' : 'anim-orbit'}
+          style={{ transformOrigin: '200px 200px', animationDuration: dur, animationDelay: delay }}
+        />
       ))}
-      {Array.from({length: 12}, (_, i) => {
-        const a = (i / 12) * Math.PI * 2;
-        const x = 200 + Math.cos(a) * 150;
-        const y = 200 + Math.sin(a) * 150;
-        return <circle key={i} cx={x} cy={y} r="3" fill="#ef4444" fillOpacity="0.6" />;
+      {/* Orbit nodes */}
+      {Array.from({ length: 8 }, (_, i) => {
+        const a = (i / 8) * Math.PI * 2;
+        const x = 200 + Math.cos(a) * 140;
+        const y = 200 + Math.sin(a) * 140;
+        return (
+          <circle
+            key={i} cx={x} cy={y} r="3"
+            fill="#ef4444" fillOpacity="0.6"
+            className="anim-twinkle"
+            style={{ animationDelay: `${i * 0.35}s` }}
+          />
+        );
       })}
-      <polygon points="200,110 240,133 240,178 200,200 160,178 160,133" stroke="#dc2626" strokeOpacity="0.4" strokeWidth="1.5" fill="#dc2626" fillOpacity="0.04" />
-      <circle cx="200" cy="155" r="16" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.6" fill="#ef4444" fillOpacity="0.1" />
-      <circle cx="200" cy="155" r="6" fill="#ef4444" fillOpacity="0.8" />
+      {/* Central hex */}
+      <polygon
+        points="200,120 240,143 240,188 200,210 160,188 160,143"
+        stroke="#dc2626" strokeOpacity="0.4" strokeWidth="1.5"
+        fill="#dc2626" fillOpacity="0.04"
+        className="anim-orbit"
+        style={{ transformOrigin: '200px 165px', animationDuration: '30s' }}
+      />
+      {/* Core orb */}
+      <circle
+        cx="200" cy="165" r="22"
+        stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.6"
+        fill="#ef4444" fillOpacity="0.08"
+        className="anim-pulse-ring"
+        style={{ transformOrigin: '200px 165px' }}
+      />
+      <circle
+        cx="200" cy="165" r="9"
+        fill="#ef4444" fillOpacity="0.9"
+        className="anim-pulse-glow"
+        style={{ transformOrigin: '200px 165px' }}
+      />
     </svg>
   );
 }
@@ -71,15 +117,16 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       <LoginGraphic />
 
-      <div className="w-full max-w-md animate-in fade-in zoom-in-95 duration-300 relative z-10">
-        <div className="flex justify-center mb-8">
+      <div className="anim-fade-up w-full max-w-md relative z-10">
+        {/* Logo */}
+        <div className="anim-fade-up delay-100 flex justify-center mb-8">
           <div className="flex items-center gap-2">
             <Zap className="h-8 w-8 text-primary" />
             <span className="font-mono font-bold tracking-tight text-2xl text-primary">DARK_ALLIANCE</span>
           </div>
         </div>
 
-        <Card className="bg-card/90 border-border/50 shadow-xl shadow-primary/10 backdrop-blur">
+        <Card className="anim-fade-up delay-200 bg-card/90 border-border/50 shadow-xl shadow-primary/10 backdrop-blur">
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold font-mono tracking-tight">OWNER_LOGIN</CardTitle>
             <CardDescription className="font-mono text-xs">Enter credentials to access the admin panel</CardDescription>
@@ -94,7 +141,7 @@ export default function AdminLogin() {
                     id="password"
                     type="password"
                     data-testid="input-password"
-                    className="pl-9 font-mono bg-background focus-visible:ring-primary"
+                    className="pl-9 font-mono bg-background focus-visible:ring-primary transition-shadow duration-200"
                     placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -106,7 +153,7 @@ export default function AdminLogin() {
               <Button
                 type="submit"
                 data-testid="button-login"
-                className="w-full font-mono font-bold tracking-tight bg-primary text-primary-foreground hover:bg-primary/85"
+                className="w-full font-mono font-bold tracking-tight bg-primary text-primary-foreground hover:bg-primary/85 btn-press"
                 disabled={login.isPending || !password}
               >
                 {login.isPending ? "AUTHENTICATING..." : "LOGIN"}
