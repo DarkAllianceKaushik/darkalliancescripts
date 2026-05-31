@@ -44,13 +44,13 @@ export default function Home() {
             src="/haruna.png"
             alt="Haruna"
             data-testid="img-haruna"
-            className="h-72 md:h-96 object-contain object-bottom opacity-80 mr-16 md:mr-48 drop-shadow-[0_0_24px_rgba(220,38,38,0.4)]"
+            className="h-72 md:h-96 w-auto opacity-80 mr-8 md:mr-32 drop-shadow-[0_0_24px_rgba(220,38,38,0.4)]"
           />
           <img
             src="/rias.png"
             alt="Rias"
             data-testid="img-rias"
-            className="h-80 md:h-[420px] object-contain object-bottom opacity-90 drop-shadow-[0_0_32px_rgba(220,38,38,0.5)]"
+            className="h-80 md:h-[440px] w-auto opacity-90 drop-shadow-[0_0_32px_rgba(220,38,38,0.5)]"
           />
         </div>
 
