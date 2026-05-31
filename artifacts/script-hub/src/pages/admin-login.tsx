@@ -9,6 +9,33 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Zap } from "lucide-react";
 
+function LoginGraphic() {
+  return (
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" aria-hidden="true">
+      <defs>
+        <radialGradient id="lglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#dc2626" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
+        </radialGradient>
+        <filter id="lblur"><feGaussianBlur stdDeviation="6" /></filter>
+      </defs>
+      <circle cx="200" cy="200" r="180" fill="url(#lglow)" filter="url(#lblur)" />
+      {[60,90,120,150].map(r => (
+        <circle key={r} cx="200" cy="200" r={r} stroke="#dc2626" strokeOpacity="0.25" strokeWidth="1" fill="none" strokeDasharray="8 6" />
+      ))}
+      {Array.from({length: 12}, (_, i) => {
+        const a = (i / 12) * Math.PI * 2;
+        const x = 200 + Math.cos(a) * 150;
+        const y = 200 + Math.sin(a) * 150;
+        return <circle key={i} cx={x} cy={y} r="3" fill="#ef4444" fillOpacity="0.6" />;
+      })}
+      <polygon points="200,110 240,133 240,178 200,200 160,178 160,133" stroke="#dc2626" strokeOpacity="0.4" strokeWidth="1.5" fill="#dc2626" fillOpacity="0.04" />
+      <circle cx="200" cy="155" r="16" stroke="#ef4444" strokeWidth="1.5" strokeOpacity="0.6" fill="#ef4444" fillOpacity="0.1" />
+      <circle cx="200" cy="155" r="6" fill="#ef4444" fillOpacity="0.8" />
+    </svg>
+  );
+}
+
 export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [, setLocation] = useLocation();
@@ -42,20 +69,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background character art */}
-      <div className="absolute inset-0 pointer-events-none select-none">
-        <img
-          src="/rias.png"
-          alt=""
-          className="absolute right-0 bottom-0 h-[80vh] object-contain object-bottom opacity-15"
-        />
-        <img
-          src="/haruna.png"
-          alt=""
-          className="absolute left-0 bottom-0 h-[60vh] object-contain object-bottom opacity-10"
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsla(0,90%,55%,0.05)_0%,_transparent_70%)]" />
-      </div>
+      <LoginGraphic />
 
       <div className="w-full max-w-md animate-in fade-in zoom-in-95 duration-300 relative z-10">
         <div className="flex justify-center mb-8">
