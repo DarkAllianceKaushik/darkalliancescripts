@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "47v-2hDdEkwmEUzXY_oDf"
+uri = "file://artifacts/script-hub/public/rias.png"
+type = "image"
+title = "rias gremory swimsuit"
+
+[[generated]]
+id = "UAey-A4UdCaC9Cmt1Gvix"
+uri = "file://artifacts/script-hub/public/haruna.png"
+type = "image"
+title = "haruna sairenji swimsuit"

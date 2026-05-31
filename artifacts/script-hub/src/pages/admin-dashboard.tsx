@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { 
-  useAdminListScripts, 
-  useAdminLogout, 
-  useAdminDeleteScript, 
-  useAdminTogglePublish, 
-  useAdminCreateScript, 
+import {
+  useAdminListScripts,
+  useAdminLogout,
+  useAdminDeleteScript,
+  useAdminTogglePublish,
+  useAdminCreateScript,
   useAdminUpdateScript,
   getAdminListScriptsQueryKey,
   getListPublishedScriptsQueryKey,
@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const { data: scripts, isLoading } = useAdminListScripts();
   const logout = useAdminLogout();
   const deleteScript = useAdminDeleteScript();
@@ -38,7 +38,7 @@ export default function AdminDashboard() {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
-  
+
   const [formData, setFormData] = useState<ScriptInput>({
     title: "",
     description: "",
@@ -135,12 +135,13 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-2">
             <LayoutDashboard className="h-5 w-5 text-primary" />
             <span className="font-mono font-bold tracking-tight text-lg text-primary">ADMIN_DASHBOARD</span>
+            <span className="hidden md:inline font-mono text-xs text-muted-foreground ml-2">— DARK_ALLIANCE_SCRIPTS</span>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="font-mono text-xs" onClick={() => setLocation("/")}>
+            <Button variant="ghost" className="font-mono text-xs" data-testid="button-view-store" onClick={() => setLocation("/")}>
               VIEW_STORE
             </Button>
-            <Button variant="outline" size="sm" className="font-mono text-xs text-destructive border-destructive/20 hover:bg-destructive/10" onClick={handleLogout} disabled={logout.isPending}>
+            <Button variant="outline" size="sm" className="font-mono text-xs text-destructive border-destructive/20 hover:bg-destructive/10" onClick={handleLogout} disabled={logout.isPending} data-testid="button-logout">
               <LogOut className="h-4 w-4 mr-2" /> LOGOUT
             </Button>
           </div>
@@ -153,10 +154,10 @@ export default function AdminDashboard() {
             <h1 className="text-3xl font-extrabold tracking-tight mb-2">Scripts</h1>
             <p className="text-muted-foreground font-mono text-sm">Manage your published and draft scripts</p>
           </div>
-          
+
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
-              <Button onClick={openNewForm} className="font-mono font-bold tracking-tight bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button data-testid="button-new-script" onClick={openNewForm} className="font-mono font-bold tracking-tight bg-primary text-primary-foreground hover:bg-primary/85">
                 <Plus className="mr-2 h-4 w-4" /> NEW_SCRIPT
               </Button>
             </DialogTrigger>
@@ -171,32 +172,32 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="title" className="font-mono text-xs">TITLE</Label>
-                    <Input id="title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required className="font-mono bg-background" />
+                    <Input data-testid="input-title" id="title" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required className="font-mono bg-background" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="category" className="font-mono text-xs">CATEGORY</Label>
-                    <Input id="category" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required className="font-mono bg-background" />
+                    <Input data-testid="input-category" id="category" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} required className="font-mono bg-background" />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="description" className="font-mono text-xs">DESCRIPTION</Label>
-                  <Textarea id="description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required className="font-mono bg-background h-24" />
+                  <Textarea data-testid="input-description" id="description" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required className="font-mono bg-background h-24" />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="scriptUrl" className="font-mono text-xs">SCRIPT_URL (Direct Link)</Label>
-                  <Input id="scriptUrl" type="url" value={formData.scriptUrl} onChange={e => setFormData({...formData, scriptUrl: e.target.value})} required className="font-mono bg-background" />
+                  <Input data-testid="input-script-url" id="scriptUrl" type="url" value={formData.scriptUrl} onChange={e => setFormData({...formData, scriptUrl: e.target.value})} required className="font-mono bg-background" />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="imageUrl" className="font-mono text-xs">IMAGE_URL (Optional)</Label>
-                    <Input id="imageUrl" type="url" value={formData.imageUrl || ""} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="font-mono bg-background" />
+                    <Input data-testid="input-image-url" id="imageUrl" type="url" value={formData.imageUrl || ""} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="font-mono bg-background" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="tags" className="font-mono text-xs">TAGS (Comma separated)</Label>
-                    <Input id="tags" value={formData.tags || ""} onChange={e => setFormData({...formData, tags: e.target.value})} className="font-mono bg-background" />
+                    <Input data-testid="input-tags" id="tags" value={formData.tags || ""} onChange={e => setFormData({...formData, tags: e.target.value})} className="font-mono bg-background" />
                   </div>
                 </div>
 
@@ -205,11 +206,11 @@ export default function AdminDashboard() {
                     <Label htmlFor="published" className="font-mono text-sm font-bold">PUBLISHED</Label>
                     <p className="text-xs font-mono text-muted-foreground">Make this script visible in the public store.</p>
                   </div>
-                  <Switch id="published" checked={formData.published} onCheckedChange={c => setFormData({...formData, published: c})} />
+                  <Switch data-testid="switch-published" id="published" checked={formData.published} onCheckedChange={c => setFormData({...formData, published: c})} />
                 </div>
 
                 <DialogFooter className="pt-4">
-                  <Button type="submit" className="font-mono font-bold w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={createScript.isPending || updateScript.isPending}>
+                  <Button data-testid="button-save-script" type="submit" className="font-mono font-bold w-full bg-primary text-primary-foreground hover:bg-primary/85" disabled={createScript.isPending || updateScript.isPending}>
                     {createScript.isPending || updateScript.isPending ? "SAVING..." : "SAVE_SCRIPT"}
                   </Button>
                 </DialogFooter>
@@ -239,7 +240,7 @@ export default function AdminDashboard() {
                 </TableRow>
               ) : (
                 scripts?.map((script) => (
-                  <TableRow key={script.id} className="border-border/50 hover:bg-white/5 transition-colors">
+                  <TableRow key={script.id} data-testid={`row-script-${script.id}`} className="border-border/50 hover:bg-white/5 transition-colors">
                     <TableCell>
                       {script.published ? (
                         <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 font-mono text-xs">PUBLISHED</Badge>
@@ -255,13 +256,13 @@ export default function AdminDashboard() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="icon" className="h-8 w-8 border-border" onClick={() => handleTogglePublish(script.id)} title={script.published ? "Unpublish" : "Publish"}>
+                        <Button variant="outline" size="icon" className="h-8 w-8 border-border" data-testid={`button-toggle-publish-${script.id}`} onClick={() => handleTogglePublish(script.id)} title={script.published ? "Unpublish" : "Publish"}>
                           {script.published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8 border-border" onClick={() => openEditForm(script)} title="Edit">
+                        <Button variant="outline" size="icon" className="h-8 w-8 border-border" data-testid={`button-edit-${script.id}`} onClick={() => openEditForm(script)} title="Edit">
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="icon" className="h-8 w-8 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => handleDelete(script.id)} title="Delete">
+                        <Button variant="outline" size="icon" className="h-8 w-8 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive" data-testid={`button-delete-${script.id}`} onClick={() => handleDelete(script.id)} title="Delete">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
