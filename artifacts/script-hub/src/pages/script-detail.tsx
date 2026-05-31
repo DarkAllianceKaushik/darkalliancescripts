@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import { useGetScript } from "@workspace/api-client-react";
+import { DiscordButton } from "@/components/discord-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -43,6 +44,8 @@ export default function ScriptDetail() {
           <p className="font-mono text-xs text-muted-foreground">DARK_ALLIANCE_SCRIPTS &mdash; All rights reserved</p>
         </div>
       </footer>
+
+      <DiscordButton />
     </div>
   );
 }

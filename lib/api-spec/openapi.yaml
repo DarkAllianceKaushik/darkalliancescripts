@@ -85,6 +85,40 @@ paths:
               schema:
                 $ref: "#/components/schemas/ScriptStats"
 
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [scripts]
+      summary: Get public site settings (e.g. Discord URL)
+      responses:
+        "200":
+          description: Site settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
+  /admin/settings:
+    patch:
+      operationId: adminUpdateSettings
+      tags: [admin]
+      summary: Update site settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettingsInput"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+        "401":
+          description: Unauthorized
+
   /admin/login:
     post:
       operationId: adminLogin
@@ -328,6 +362,19 @@ components:
                 type: string
               count:
                 type: integer
+
+    SiteSettings:
+      type: object
+      required: [discordUrl]
+      properties:
+        discordUrl:
+          type: string
+
+    SiteSettingsInput:
+      type: object
+      properties:
+        discordUrl:
+          type: string
 
     AdminLoginInput:
       type: object

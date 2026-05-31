@@ -73,6 +73,26 @@ export const GetScriptStatsResponse = zod.object({
 
 
 /**
+ * @summary Get public site settings (e.g. Discord URL)
+ */
+export const GetSettingsResponse = zod.object({
+  "discordUrl": zod.string()
+})
+
+
+/**
+ * @summary Update site settings
+ */
+export const AdminUpdateSettingsBody = zod.object({
+  "discordUrl": zod.string().optional()
+})
+
+export const AdminUpdateSettingsResponse = zod.object({
+  "discordUrl": zod.string()
+})
+
+
+/**
  * @summary Owner login
  */
 export const AdminLoginBody = zod.object({

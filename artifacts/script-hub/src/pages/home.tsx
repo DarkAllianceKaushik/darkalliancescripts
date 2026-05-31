@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useListPublishedScripts, useGetScriptStats } from "@workspace/api-client-react";
+import { DiscordButton } from "@/components/discord-button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -387,6 +388,8 @@ export default function Home() {
           <p className="font-mono text-xs text-muted-foreground">DARK_ALLIANCE_SCRIPTS &mdash; All rights reserved</p>
         </div>
       </footer>
+
+      <DiscordButton />
     </div>
   );
 }

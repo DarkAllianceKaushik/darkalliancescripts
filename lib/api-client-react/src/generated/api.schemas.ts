@@ -61,6 +61,14 @@ export interface ScriptStats {
   categories: ScriptStatsCategoriesItem[];
 }
 
+export interface SiteSettings {
+  discordUrl: string;
+}
+
+export interface SiteSettingsInput {
+  discordUrl?: string;
+}
+
 export interface AdminLoginInput {
   password: string;
 }

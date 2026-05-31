@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import {
   useAdminListScripts,
@@ -7,9 +7,12 @@ import {
   useAdminTogglePublish,
   useAdminCreateScript,
   useAdminUpdateScript,
+  useAdminUpdateSettings,
+  useGetSettings,
   getAdminListScriptsQueryKey,
   getListPublishedScriptsQueryKey,
-  getAdminMeQueryKey
+  getAdminMeQueryKey,
+  getGetSettingsQueryKey,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -21,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, Plus, Pencil, Trash2, LogOut, Eye, EyeOff, LayoutDashboard } from "lucide-react";
+import { Zap, Plus, Pencil, Trash2, LogOut, Eye, EyeOff, LayoutDashboard, Settings2, Save } from "lucide-react";
 import type { Script, ScriptInput } from "@workspace/api-client-react/src/generated/api.schemas";
 
 export default function AdminDashboard() {
@@ -35,6 +38,31 @@ export default function AdminDashboard() {
   const togglePublish = useAdminTogglePublish();
   const createScript = useAdminCreateScript();
   const updateScript = useAdminUpdateScript();
+
+  const updateSettings = useAdminUpdateSettings();
+  const { data: siteSettings } = useGetSettings();
+  const [discordUrl, setDiscordUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (siteSettings?.discordUrl !== undefined) {
+      setDiscordUrl(siteSettings.discordUrl);
+    }
+  }, [siteSettings?.discordUrl]);
+
+  const handleSaveSettings = () => {
+    updateSettings.mutate(
+      { data: { discordUrl } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: getGetSettingsQueryKey() });
+          toast({ title: "SAVED", description: "Discord URL updated." });
+        },
+        onError: () => {
+          toast({ title: "ERROR", description: "Failed to save settings.", variant: "destructive" });
+        }
+      }
+    );
+  };
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
@@ -272,6 +300,37 @@ export default function AdminDashboard() {
               )}
             </TableBody>
           </Table>
+        </div>
+        {/* Settings panel */}
+        <div className="mt-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Settings2 className="h-5 w-5 text-muted-foreground" />
+            <h2 className="text-xl font-extrabold tracking-tight">Settings</h2>
+          </div>
+          <div className="border border-border/50 rounded-lg bg-card/50 p-6 space-y-4 max-w-xl">
+            <div className="space-y-2">
+              <Label htmlFor="discordUrl" className="font-mono text-xs">DISCORD_INVITE_URL</Label>
+              <p className="text-xs text-muted-foreground font-mono">
+                The invite link shown as a floating button on the public store. Leave blank to hide it.
+              </p>
+              <Input
+                id="discordUrl"
+                type="url"
+                placeholder="https://discord.gg/your-invite"
+                value={discordUrl}
+                onChange={(e) => setDiscordUrl(e.target.value)}
+                className="font-mono bg-background"
+              />
+            </div>
+            <Button
+              onClick={handleSaveSettings}
+              disabled={updateSettings.isPending}
+              className="font-mono font-bold bg-primary text-primary-foreground hover:bg-primary/85 btn-press"
+            >
+              <Save className="mr-2 h-4 w-4" />
+              {updateSettings.isPending ? "SAVING..." : "SAVE_SETTINGS"}
+            </Button>
+          </div>
         </div>
       </main>
     </div>

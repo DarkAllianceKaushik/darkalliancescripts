@@ -16,3 +16,5 @@ export * from './scriptInput';
 export * from './scriptStats';
 export * from './scriptStatsCategoriesItem';
 export * from './scriptUpdate';
+export * from './siteSettings';
+export * from './siteSettingsInput';
